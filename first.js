@@ -1,34 +1,18 @@
-// document.querySelector('#button').addEventListener('click',()=>{
-
-//     const place = document.getElementById('location').value;
-    
-//     function updateTemp(data){
-//        const element = document.getElementById('weatherInfo');
-//        element.innerHTML = `Today's Temperature: ${data.current.temp_c}`;
-//     }
-
-//     const prom = fetch(`http://api.weatherapi.com/v1/current.json?key=cb6538f8a8fc4df1be492634250201&q=${place}&aqi=yes`)
-    
-
-
-//     prom
-//     .then(response=>response.json())
-//     .then(data=> updateTemp(data));
-
-
-
-// })
-
 let button = document.getElementById("button");
 
 button.addEventListener("click", () => {
     let element = document.getElementById("weatherInfo");
     const place = document.getElementById("location").value;
 
-    fetch(`http://api.weatherapi.com/v1/current.json?key=cb6538f8a8fc4df1be492634250201&q=${place}&aqi=yes`)
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=bd5e378503939ddaee76f12ad7a97608&units=metric`)
         .then(response => response.json())
         .then(data => {
-            element.innerText = data.current.temp_c + "°C";
+            if (data.cod != 200) {
+                element.innerText = data.message;
+                return;
+            }
+
+            element.innerText = data.main.temp + "°C";
         })
         .catch(error => {
             console.error(error);
